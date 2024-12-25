@@ -1,0 +1,66 @@
+{
+    "info": {
+        "_postman_id": "12345678-abcd-efgh-ijkl-1234567890ab",
+        "name": "TCG Games API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Cards",
+            "item": [
+                {
+                    "name": "List Cards",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "http://localhost:9090/cards?name=Goblin&rarities=common,rare&games=Magic&colors=red,green&ink_cost_min=1&ink_cost_max=5",
+                            "protocol": "http",
+                            "host": [
+                                "localhost"
+                            ],
+                            "port": "9090",
+                            "path": [
+                                "cards"
+                            ],
+                            "query": [
+                                {
+                                    "key": "name",
+                                    "value": "Goblin"
+                                },
+                                {
+                                    "key": "rarities",
+                                    "value": "common"
+                                },
+                                {
+                                    "key": "rarities",
+                                    "value": "rare"
+                                },
+                                {
+                                    "key": "games",
+                                    "value": "MTG"
+                                },
+                                {
+                                    "key": "colors",
+                                    "value": "red"
+                                },
+                                {
+                                    "key": "colors",
+                                    "value": "green"
+                                },
+                                {
+                                    "key": "ink_cost_min",
+                                    "value": "1"
+                                },
+                                {
+                                    "key": "ink_cost_max",
+                                    "value": "5"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

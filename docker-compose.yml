@@ -1,0 +1,73 @@
+services:
+  tcggames:
+    container_name: tcg-games
+    build:
+      context: .
+    ports:
+      - '$PORT:$PORT'
+    volumes:
+      - ./:/app
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - dev-bridge
+  postgres:
+    hostname: $DB_HOST_NAME
+    container_name: chimp_data_postgres
+    image: postgres:14.2-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=$DB_NAME
+      - POSTGRES_USER=$DB_USER
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+    volumes:
+      - ./store/data/postgres:/var/lib/postgresql/data
+    ports:
+      - $DB_PORT:$DB_PORT
+    networks:
+      - dev-bridge
+  redis:
+    image: redis:7
+    hostname: $REDIS_HOST_NAME
+    container_name: chimp_data_redis
+    ports:
+      - $REDIS_PORT:$REDIS_PORT
+    volumes:
+      - ./store/data/redis:/data
+    sysctls:
+      - net.core.somaxconn=511
+    restart: unless-stopped
+    logging:
+      driver: 'json-file'
+      options:
+        max-file: '5'
+        max-size: '10m'
+    command:
+      [
+        'redis-server',
+        '--bind',
+        $REDIS_HOST_NAME,
+        '--port',
+        $REDIS_PORT,
+        '--requirepass',
+        $REDIS_PASSWORD,
+      ]
+    networks:
+      - dev-bridge
+  pgadmin:
+    container_name: chimp_pgadmin
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=$PGADMIN_DEFAULT_EMAIL
+      - PGADMIN_DEFAULT_PASSWORD=$PGADMIN_DEFAULT_PASSWORD
+    ports:
+      - $PGADMIN_PORT:80
+    logging:
+      driver: none
+    networks:
+      - dev-bridge
+networks:
+  dev-bridge:
+    external: true
